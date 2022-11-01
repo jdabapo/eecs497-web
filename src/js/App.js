@@ -97,11 +97,16 @@ export default function Album() {
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Heading
+                      Info
                     </Typography>
                     <Typography>
-                      This is a media card. You can use this section to describe the
-                      content.
+                      {/* maybe we should have card class that keeps track of the values
+                       below */}
+                      <p>Ethnicity : </p>
+                      <p>Year : </p>
+                      <p>Name : </p>
+                      <p>Email : </p>
+                      <p>Description : </p>
                     </Typography>
                   </CardContent>
                   <CardActions>
