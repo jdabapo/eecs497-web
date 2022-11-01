@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,16 +13,32 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { getAuth } from "firebase/auth";
+import {app} from "./FirebaseApp.js"
+
 const theme = createTheme();
 
-export default function SignIn() {
+const auth = getAuth(app);
+
+const SignIn = ({setExists}) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [
+    signInWithEmailAndPassword,
+    user,
+    loading,
+    error,
+  ] = useSignInWithEmailAndPassword(auth);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+      email: email,
+      password: password,
     });
+    signInWithEmailAndPassword(email, password);
   };
 
   return (
@@ -44,25 +60,23 @@ export default function SignIn() {
             Sign in
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            
             <TextField
-              margin="normal"
               required
               fullWidth
               id="email"
               label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
-              margin="normal"
               required
               fullWidth
-              name="password"
+              id="password"
               label="Password"
               type="password"
-              id="password"
-              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -77,16 +91,16 @@ export default function SignIn() {
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
+              {/* <Grid item xs>
                 <Link href="#" variant="body2">
                   Forgot password?
                 </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
+              </Grid> */}
+              {/* <Grid item> */}
+                <Link href="#" variant="body2" onClick={() => setExists(false)}>
                   {"Don't have an account? Sign Up"}
                 </Link>
-              </Grid>
+              {/* </Grid> */}
             </Grid>
           </Box>
         </Box>
@@ -94,3 +108,5 @@ export default function SignIn() {
     </ThemeProvider>
   );
 }
+
+export default SignIn;
