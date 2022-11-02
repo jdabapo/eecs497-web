@@ -1,6 +1,9 @@
 import { useState } from 'react';
 
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import Avatar from '@mui/material/Avatar';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
 
 import { getAuth } from "firebase/auth";
 import {app} from "./FirebaseApp.js"
@@ -51,6 +54,20 @@ const SignUp3 = ({setExists}) => {
   return (
     <div className="App">
       <Container component="main" maxWidth="xs">
+      <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
         <Box mt={8}>
           <TextField
             required
@@ -81,6 +98,7 @@ const SignUp3 = ({setExists}) => {
           <Link href="" variant="body2" onClick={() => setExists(true)}>
             {"Have an account? Sign In"}
           </Link>
+        </Box>
         </Box>
       </Container>
     </div>

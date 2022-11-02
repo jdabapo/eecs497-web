@@ -21,7 +21,7 @@ const Footer = () => (
       color="text.secondary"
       component="p"
     >
-      Something here to give the footer a purpose!
+      You're so cool, your roommate should be too.
     </Typography>
     <Copyright />
   </Box>
