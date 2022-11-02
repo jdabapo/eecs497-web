@@ -1,33 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { getAuth } from "firebase/auth";
-import { app } from "./FirebaseApp.js"
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // import SignUp from "./SignUp";
 import Login from "./Login";
 import SignUp3 from './SignUp3.js';
 import Main from "./Main";
+import Profile from "./Profile.js";
+import Header from './Header.js';
 import Footer from "./Footer";
 
 const theme = createTheme();
-const auth = getAuth(app);
 
 export default function App() {
-  const [user] = useAuthState(auth);
-  const [exists, setExists] = useState(true);
-
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-        
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
 
-        {user ? <Main />
-        : exists ? <Login setExists={setExists} /> : <SignUp3 setExists={setExists} />}
-        
-        <Footer />
-  </ThemeProvider>
+          <Header/>
+          <Routes>
+            <Route path="/main" element={<Main />} />
+            <Route path="/sign-in" element={<Login />} />
+            <Route path="/sign-up" element={<SignUp3 />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+          <Footer />
+    </ThemeProvider>
+  </BrowserRouter>
   );
 }

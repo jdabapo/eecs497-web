@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -24,6 +25,8 @@ const auth = getAuth(app);
 const SignIn = ({setExists}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  
+  let navigate = useNavigate();
 
   const [
     signInWithEmailAndPassword,
@@ -38,7 +41,13 @@ const SignIn = ({setExists}) => {
       email: email,
       password: password,
     });
-    signInWithEmailAndPassword(email, password);
+    try {
+      signInWithEmailAndPassword(email, password);
+      navigate("/main");
+    }
+    catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -82,25 +91,20 @@ const SignIn = ({setExists}) => {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
+            {/* <Link to="/main"> */}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={e => handleSubmit(e)}
+              >
+                Sign In
+              </Button>
             <Grid container>
-              {/* <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid> */}
-              {/* <Grid item> */}
-                <Link href="#" variant="body2" onClick={() => setExists(false)}>
+                <Link href="/sign-up" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
-              {/* </Grid> */}
             </Grid>
           </Box>
         </Box>

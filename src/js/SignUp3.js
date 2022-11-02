@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import Avatar from '@mui/material/Avatar';
@@ -20,6 +21,8 @@ const SignUp3 = ({setExists}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   // const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
+
+  let navigate = useNavigate();
   
   const [
     createUserWithEmailAndPassword,
@@ -31,7 +34,7 @@ const SignUp3 = ({setExists}) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     createUserWithEmailAndPassword(email, password)
-
+    navigate("/main")
   };
 
   if (error) {
@@ -66,7 +69,7 @@ const SignUp3 = ({setExists}) => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign Up
           </Typography>
         <Box mt={8}>
           <TextField
@@ -93,9 +96,9 @@ const SignUp3 = ({setExists}) => {
             sx={{ mt: 3, mb: 2 }}
             onClick={e => handleSubmit(e)}
           >
-            Sign Up
+            <Link to="/main">Sign Up</Link>
           </Button>
-          <Link href="" variant="body2" onClick={() => setExists(true)}>
+          <Link to="/sign-in" variant="body2">
             {"Have an account? Sign In"}
           </Link>
         </Box>

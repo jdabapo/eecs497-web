@@ -37,13 +37,12 @@ const Post = ({card}) => (
           <Chip icon={<SchoolIcon fontSize='small' />} label={card.year} sx={{ mt: 0.5, mr: 0.5 }} />
           <Chip icon={<PublicIcon fontSize='small' />} label={card.ethnicity} sx={{ mt: 0.5, mr: 0.5 }} />
           <Chip icon={<RecordVoiceOverIcon fontSize='small' />} label={card.language} sx={{ mt: 0.5, mr: 0.5 }} />
-          <p>Email : </p>
-          <p>Description : </p>
+          <p>{card.about}</p>
         </Typography>
       </CardContent>
       <CardActions className='buttons'>
         <Button size="small">Contact me</Button>
-        <Button size="small">Add to favorites</Button>
+        {/* <Button size="small">Add to favorites</Button> */}
       </CardActions>
     </Card>
   </Grid>
