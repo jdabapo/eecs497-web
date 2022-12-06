@@ -1,9 +1,13 @@
-import * as React from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Post from "./Post";
+import { getFirestore, collection } from 'firebase/firestore';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import {app} from "./FirebaseApp.js"
+
 
 const cards = [
   {
@@ -31,48 +35,71 @@ const cards = [
   },
 ];
 
-const Main = () => (
-  <main>
-      {/* Hero unit */}
-      <Box
-        sx={{
-          bgcolor: 'background.paper',
-          pt: 8,
-          pb: 6,
-        }}
-      >
-        <Container maxWidth="sm">
-          <Typography
-            component="h1"
-            variant="h2"
-            align="center"
-            color="text.primary"
-            gutterBottom
-          >
-            Wolveroommates
-          </Typography>
-          <Typography variant="h5" align="center" color="text.secondary" paragraph>
-            Find your ideal roommate here!
-          </Typography>
-          {/* <Stack
-            sx={{ pt: 4 }}
-            direction="row"
-            spacing={2}
-            justifyContent="center"
-          >
-            <Button variant="contained">Main call to action</Button>
-            <Button variant="outlined">Secondary action</Button>
-          </Stack> */}
+function Main(){
+    const [value, loading, error] = useCollection(collection(getFirestore(app), 'users'));
+    const [cards,setCards] = useState([]);
+    // TODO: filters
+
+    useEffect(()=>{
+      if(error){
+        console.log(error);
+      }
+      else if(loading === false){
+        let tmp = []
+        value.docs.map((doc) => (tmp.push(doc)));
+        setCards(tmp);
+      }
+    },[loading,error]);
+    
+    return (
+    <>
+        {/* Hero unit */}
+        <Box
+          sx={{
+            bgcolor: 'background.paper',
+            pt: 8,
+            pb: 6,
+          }}
+        >
+          <Container maxWidth="sm">
+            <Typography
+              component="h1"
+              variant="h2"
+              align="center"
+              color="text.primary"
+              gutterBottom
+            >
+              Wolveroommates
+            </Typography>
+            <Typography variant="h5" align="center" color="text.secondary" paragraph>
+              Find your ideal roommate here!
+            </Typography>
+            {/* <Stack
+              sx={{ pt: 4 }}
+              direction="row"
+              spacing={2}
+              justifyContent="center"
+            >
+              <Button variant="contained">Main call to action</Button>
+              <Button variant="outlined">Secondary action</Button>
+            </Stack> */}
+          </Container>
+        </Box>
+        <Container sx={{ py: 8 }} maxWidth="md">
+          {!loading ?
+            <Grid container spacing={4}>
+            {cards.map(card => (
+              <Post key={card.name} card={card} />
+            ))
+            }
+            </Grid>
+
+            :
+            <p>loading</p>
+          }
         </Container>
-      </Box>
-      <Container sx={{ py: 8 }} maxWidth="md">
-        <Grid container spacing={4}>
-          {cards.map(card => (
-            <Post card={card} />
-          ))}
-        </Grid>
-      </Container>
-    </main>
-);
+      </>
+    )
+  };
 
 export default Main;
