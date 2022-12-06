@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import Avatar from '@mui/material/Avatar';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import PersonIcon from '@mui/icons-material/Person';
 import Typography from '@mui/material/Typography';
 
 import { getAuth } from "firebase/auth";
@@ -33,8 +34,8 @@ const SignUp3 = ({setExists}) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    createUserWithEmailAndPassword(email, password)
-    navigate("/main")
+    createUserWithEmailAndPassword(email, password);
+    navigate("/create");
   };
 
   if (error) {
@@ -66,12 +67,12 @@ const SignUp3 = ({setExists}) => {
           }}
         >
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign Up
-          </Typography>
-        <Box mt={8}>
+          <PersonIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign Up
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             required
             fullWidth
@@ -96,9 +97,9 @@ const SignUp3 = ({setExists}) => {
             sx={{ mt: 3, mb: 2 }}
             onClick={e => handleSubmit(e)}
           >
-            <Link to="/main">Sign Up</Link>
+            Next
           </Button>
-          <Link to="/sign-in" variant="body2">
+          <Link href="/sign-in" variant="body2">
             {"Have an account? Sign In"}
           </Link>
         </Box>
