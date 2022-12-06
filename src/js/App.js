@@ -21,7 +21,7 @@ const auth = getAuth(app);
 
 export default function App() {
   const [user, loading, error] = useAuthState(auth);
-
+  
   // TODO: fix this so it shows different routes
   if (user){
     return (
@@ -31,7 +31,7 @@ export default function App() {
           <Header/>
           <Routes>
             <Route path="/main" element={<Main />} />
-            <Route path="/sign-in" element={<Login />} />
+            <Route path="/" element={<Login />} />
             <Route path="/sign-up" element={<SignUp3 />} />
             <Route path="/create" element={<Create />} />
             <Route path="/profile" element={<Profile />} />
@@ -48,7 +48,7 @@ export default function App() {
       <CssBaseline />
         <Header/>
         <Routes>
-          <Route path="/sign-in" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route path="/sign-up" element={<SignUp3 />} />
         </Routes>
         <Footer />

@@ -99,7 +99,7 @@ const SignUp3 = ({setExists}) => {
           >
             Next
           </Button>
-          <Link href="/sign-in" variant="body2">
+          <Link href="/" variant="body2">
             {"Have an account? Sign In"}
           </Link>
         </Box>
