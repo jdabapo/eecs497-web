@@ -33,13 +33,13 @@ export default function Post({card}){
         <Typography gutterBottom variant="h5" component="h2">
           {card.name}
         </Typography>
+        {/* maybe we should have card class that keeps track of the values
+          below */}
+        <Chip icon={<SchoolIcon fontSize='small' />} label={card.year} sx={{ mt: 0.5, mr: 0.5 }} />
+        <Chip icon={<PublicIcon fontSize='small' />} label={card.ethnicity} sx={{ mt: 0.5, mr: 0.5 }} />
+        <Chip icon={<RecordVoiceOverIcon fontSize='small' />} label={card.language} sx={{ mt: 0.5, mr: 0.5 }} />
         <Typography>
-          {/* maybe we should have card class that keeps track of the values
-            below */}
-          <Chip icon={<SchoolIcon fontSize='small' />} label={card.year} sx={{ mt: 0.5, mr: 0.5 }} />
-          <Chip icon={<PublicIcon fontSize='small' />} label={card.ethnicity} sx={{ mt: 0.5, mr: 0.5 }} />
-          <Chip icon={<RecordVoiceOverIcon fontSize='small' />} label={card.language} sx={{ mt: 0.5, mr: 0.5 }} />
-          <p>{card.about}</p>
+          {card.about}
         </Typography>
       </CardContent>
       <CardActions className='buttons'>
