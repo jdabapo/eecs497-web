@@ -139,7 +139,7 @@ export default function Header() {
                         </MenuItem>
                         <MenuItem key="Logout" onClick={() => auth.signOut()}>
                             <Typography textAlign="center">
-                                <Link to="/">Log Out</Link>
+                                <Link to="/sign-up">Log Out</Link>
                             </Typography>
                         </MenuItem>
                     </Menu>

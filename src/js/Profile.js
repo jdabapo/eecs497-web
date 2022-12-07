@@ -1,4 +1,11 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
+import { useDocument } from 'react-firebase-hooks/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+
+
+import { getAuth } from 'firebase/auth';
+import { app, db } from './FirebaseApp';
 import CssBaseline from '@mui/material/CssBaseline';
 // import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
@@ -31,16 +38,38 @@ const theme = createTheme();
 //   );
 // }
 
+// const profile = {
+//   name: "Tom Qin",
+//   year: "Grad",
+//   ethnicity: "East Asian",
+//   language: "Japanese",
+//   img: "https://media-exp1.licdn.com/dms/image/C5603AQFFJWPKmV81Sg/profile-displayphoto-shrink_400_400/0/1600595038316?e=1672876800&v=beta&t=J127g_aglU7GRKYsutKuD9NRw194Vc1ICnoJsoV_-W0",
+//   email: "tom@umich.edu",
+//   bio: "Hi, I'm Tom. I like croissants and ice creams"
+// }
+
 export default function Profile() {
-  const profile = {
-    name: "Tom Qin",
-    year: "Grad",
-    ethnicity: "East Asian",
-    language: "Japanese",
-    img: "https://media-exp1.licdn.com/dms/image/C5603AQFFJWPKmV81Sg/profile-displayphoto-shrink_400_400/0/1600595038316?e=1672876800&v=beta&t=J127g_aglU7GRKYsutKuD9NRw194Vc1ICnoJsoV_-W0",
-    email: "tom@umich.edu",
-    bio: "Hi, I'm Tom. I like croissants and ice creams"
-  }
+
+  const [profile,setProfile] = useState({});
+  const auth = getAuth(app);
+  const [user, userLoading, userError] = useAuthState(auth);
+  useEffect(()=>{
+    const fetchData = async() =>{
+      const docRef = doc(db, "users", user.email);
+      const docSnap = await getDoc(docRef);
+      if(docSnap.exists()){
+        // console.log(docSnap.data());
+      }
+      else{
+        console.log('warning');
+      }
+      setProfile(docSnap.data());
+    }
+    if(!userLoading){
+      fetchData();
+    }
+  },[userLoading]);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -62,14 +91,14 @@ export default function Profile() {
               <Card
                 sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
               >
-                <CardMedia
+                {profile.picture && <CardMedia
                   component="img"
                   sx={{
                     height: '100%'
                   }}
-                  image={profile.img}
+                  src={require("../assets/" + profile.picture)}
                   alt={"Default profile"}
-                />
+                />}
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography gutterBottom variant="h5" component="h2">
                     {profile.name}

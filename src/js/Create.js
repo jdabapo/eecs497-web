@@ -6,8 +6,11 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { doc, setDoc, getDoc, onSnapshot, collection, updateDoc, arrayRemove, arrayUnion, addDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import {app, db} from './FirebaseApp';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { getAuth } from 'firebase/auth';
+
 const theme = createTheme();
 
 export default function FormPropsTextFields() {
@@ -18,23 +21,30 @@ export default function FormPropsTextFields() {
   const [race,setRace] = useState();
   const [lang,setLang] = useState();
   const [desc,setDesc] = useState();
+  const [pic, setPic] = useState('');
+  const auth = getAuth(app);
+  const [user] = useAuthState(auth);
 
   async function handleSubmit(event){
     event.preventDefault();
-    if(name === null || gradeLevel === null || race === null || lang === null || desc === null){
-      console.log('warning');
+    if(pic === null){
+      console.log('pic warning');
     }
     else{
-      console.log('submitting');
+      // console.log('submitting');
       const toSubmit = {
         name:name,
         grade_level:gradeLevel,
         ethnicity:race,
         pref_language:lang,
-        description:desc
+        description:desc,
+        email:user.email,
+        picture:pic
       }
-      console.log(toSubmit);
-      await setDoc(doc(db,'users',name),toSubmit);
+      console.log(pic)
+      // console.log(toSubmit);
+      // console.log(user.email);
+      await setDoc(doc(db, 'users', user.email), toSubmit);
       navigate("/main");
     }
   };
@@ -106,6 +116,19 @@ export default function FormPropsTextFields() {
               value={desc}
               onChange={e => setDesc(e.target.value)}
             />
+            <Button
+              variant="contained"
+              component="label"
+              onChange={e => {
+                const pic_name = e.target.value.substr(e.target.value.lastIndexOf("\\") + 1);
+                console.log(e.target.value);
+                console.log(pic_name);
+                setPic(pic_name);
+              }}
+              >
+              Upload Picture
+              <input hidden accept="image/*" type="file" />
+            </Button>
           </div>
           <Button
             type="submit"

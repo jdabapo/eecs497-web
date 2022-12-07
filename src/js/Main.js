@@ -49,7 +49,7 @@ function Main(){
         value.docs.map((doc) => (tmp.push(doc.data())));
         setCards(tmp);
       }
-    },[loading,error]);
+    },[value,loading,error]);
     
     return (
     <>

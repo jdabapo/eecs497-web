@@ -13,33 +13,36 @@ import PublicIcon from '@mui/icons-material/Public';
 import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
 
 import '../css/post.css';
+import '../assets/storyboards.jpg';
+
 export default function Post({card}){
 
-  console.log(card);
+  console.log("../assets/" + card.picture)
+
   return(
     <Grid item key={card} xs={12} sm={6} md={4}>
     <Card
       sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
     >
-      <CardMedia
+      {card.picture && <CardMedia
         component="img"
         sx={{
           height: '200px'
         }}
-        image={card.img}
+        src={require("../assets/" + card.picture)}
         alt={card.name}
-      />
+      />}
       <CardContent sx={{ flexGrow: 1 }}>
         <Typography gutterBottom variant="h5" component="h2">
           {card.name}
         </Typography>
         {/* maybe we should have card class that keeps track of the values
           below */}
-        <Chip icon={<SchoolIcon fontSize='small' />} label={card.year} sx={{ mt: 0.5, mr: 0.5 }} />
+        <Chip icon={<SchoolIcon fontSize='small' />} label={card.grade_level} sx={{ mt: 0.5, mr: 0.5 }} />
         <Chip icon={<PublicIcon fontSize='small' />} label={card.ethnicity} sx={{ mt: 0.5, mr: 0.5 }} />
-        <Chip icon={<RecordVoiceOverIcon fontSize='small' />} label={card.language} sx={{ mt: 0.5, mr: 0.5 }} />
+        <Chip icon={<RecordVoiceOverIcon fontSize='small' />} label={card.pref_language} sx={{ mt: 0.5, mr: 0.5 }} />
         <Typography>
-          {card.about}
+          {card.description}
         </Typography>
       </CardContent>
       <CardActions className='buttons'>

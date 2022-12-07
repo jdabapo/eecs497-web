@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import Avatar from '@mui/material/Avatar';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import Typography from '@mui/material/Typography';
 
@@ -18,7 +17,7 @@ import TextField from '@mui/material/TextField';
 
 const auth = getAuth(app);
 
-const SignUp3 = ({setExists}) => {
+const SignUp3 = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   // const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
@@ -34,8 +33,13 @@ const SignUp3 = ({setExists}) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    createUserWithEmailAndPassword(email, password);
-    navigate("/create");
+    try{
+      createUserWithEmailAndPassword(email, password);
+      navigate("/create");
+    }
+    catch (error){
+      alert(error);
+    }
   };
 
   if (error) {
