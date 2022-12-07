@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { doc, setDoc, getDoc, onSnapshot, collection, updateDoc, arrayRemove, arrayUnion, addDoc } from 'firebase/firestore';
@@ -53,6 +54,9 @@ export default function FormPropsTextFields() {
           noValidate
           autoComplete="off"
         >
+          <Typography component="h1" variant="h5">
+            Profile Information
+          </Typography>
           <div
             style={{
               // marginTop: 8,
@@ -110,7 +114,7 @@ export default function FormPropsTextFields() {
             sx={{ mt: 3, mb: 2 }}
             onClick={e => handleSubmit(e)}
           >
-            Sign Up
+            Save
           </Button>
         </Box>
       </Container>
