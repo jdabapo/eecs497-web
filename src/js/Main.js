@@ -46,7 +46,7 @@ function Main(){
       }
       else if(loading === false){
         let tmp = []
-        value.docs.map((doc) => (tmp.push(doc)));
+        value.docs.map((doc) => (tmp.push(doc.data())));
         setCards(tmp);
       }
     },[loading,error]);

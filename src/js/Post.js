@@ -13,9 +13,11 @@ import PublicIcon from '@mui/icons-material/Public';
 import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
 
 import '../css/post.css';
+export default function Post({card}){
 
-const Post = ({card}) => (
-  <Grid item key={card} xs={12} sm={6} md={4}>
+  console.log(card);
+  return(
+    <Grid item key={card} xs={12} sm={6} md={4}>
     <Card
       sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
     >
@@ -46,6 +48,6 @@ const Post = ({card}) => (
       </CardActions>
     </Card>
   </Grid>
-);
+  )
+}
 
-export default Post;
