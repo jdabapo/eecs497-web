@@ -46,7 +46,10 @@ export default function Post({card}){
         </Typography>
       </CardContent>
       <CardActions className='buttons'>
-        <Button size="small">Contact me</Button>
+        <Button size="small" onClick={() => {
+          navigator.clipboard.writeText(card.email);
+          alert("Copied " + card.email + " to clipboard!");
+        }}>Email me</Button>
         {/* <Button size="small">Add to favorites</Button> */}
       </CardActions>
     </Card>

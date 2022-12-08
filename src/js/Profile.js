@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { useDocument } from 'react-firebase-hooks/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
@@ -6,6 +7,7 @@ import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 import { getAuth } from 'firebase/auth';
 import { app, db } from './FirebaseApp';
+import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 // import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
@@ -53,6 +55,8 @@ export default function Profile() {
   const [profile,setProfile] = useState({});
   const auth = getAuth(app);
   const [user, userLoading, userError] = useAuthState(auth);
+  let navigate = useNavigate();
+
   useEffect(()=>{
     const fetchData = async() =>{
       const docRef = doc(db, "users", user.email);
@@ -103,20 +107,22 @@ export default function Profile() {
                   <Typography gutterBottom variant="h5" component="h2">
                     {profile.name}
                   </Typography>
+                  <Chip icon={<SchoolIcon fontSize='small' />} label={profile.year} sx={{ mt: 0.5, mr: 0.5 }} />
+                  <Chip icon={<PublicIcon fontSize='small' />} label={profile.ethnicity} sx={{ mt: 0.5, mr: 0.5 }} />
+                  <Chip icon={<RecordVoiceOverIcon fontSize='small' />} label={profile.language} sx={{ mt: 0.5, mr: 0.5 }} />
                   <Typography>
-                    {/* maybe we should have card class that keeps track of the values
-                      below */}
-                    <Chip icon={<SchoolIcon fontSize='small' />} label={profile.year} sx={{ mt: 0.5, mr: 0.5 }} />
-                    <Chip icon={<PublicIcon fontSize='small' />} label={profile.ethnicity} sx={{ mt: 0.5, mr: 0.5 }} />
-                    <Chip icon={<RecordVoiceOverIcon fontSize='small' />} label={profile.language} sx={{ mt: 0.5, mr: 0.5 }} />
-                    <p>Email : {profile.email}</p>
-                    <p>Bio : {profile.bio}</p>
+                    {profile.description}
                   </Typography>
                 </CardContent>
-                <Container>
-                  {/* <EditButton /> */}
-                </Container>
               </Card>
+              <Button
+                // fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={() => navigate("/edit")}
+              >
+                Edit Profile
+              </Button>
             </Stack>
           </Container>
         </Box>

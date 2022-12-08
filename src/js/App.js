@@ -11,7 +11,8 @@ import Login from "./Login";
 import SignUp3 from "./SignUp3";
 import Main from "./Main";
 import Profile from "./Profile";
-import Create from "./Create"
+import Create from "./Create";
+import Edit from "./Edit";
 import Header from "./Header";
 import Footer from "./Footer";
 import {app} from "./FirebaseApp";
@@ -34,6 +35,7 @@ export default function App() {
             <Route path="/" element={<Login />} />
             <Route path="/sign-up" element={<SignUp3 />} />
             <Route path="/create" element={<Create />} />
+            <Route path="/edit" element={<Edit />} />
             <Route path="/profile" element={<Profile />} />
           </Routes>
           <Footer />
