@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 import {
   IconButton,
   AppBar,
@@ -23,6 +23,8 @@ import { Link } from "react-router-dom";
 const auth = getAuth(app);
 
 export default function Header() {
+  let navigate = useNavigate();
+
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -134,12 +136,11 @@ export default function Header() {
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   {/* TODO: Change the avatar to the person*/}
-                  {profile.picture ? <Avatar
+                  {(profile && profile.picture) && <Avatar
                     alt={profile.name}
                     src={require("../assets/" + profile.picture)}
-                  /> : <Avatar
-                    alt={profile.name}
                   />}
+                  {(profile && !profile.picture) && <Avatar alt={profile.name} />}
                 </IconButton>
               </Tooltip>
               <Menu
@@ -163,9 +164,12 @@ export default function Header() {
                     <Link to="/Profile">Profile</Link>
                   </Typography>
                 </MenuItem>
-                <MenuItem key="Logout" onClick={() => auth.signOut()}>
+                <MenuItem key="Logout" onClick={() => {
+                  auth.signOut();
+                  navigate("/");
+                }}>
                   <Typography textAlign="center">
-                    <Link to="/">Log Out</Link>
+                    Log Out
                   </Typography>
                 </MenuItem>
               </Menu>

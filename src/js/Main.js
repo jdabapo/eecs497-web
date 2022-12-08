@@ -62,7 +62,7 @@ function Main(){
           }}
         >
           <Container maxWidth="sm">
-            <Typography
+            {/* <Typography
               component="h1"
               variant="h2"
               align="center"
@@ -70,7 +70,7 @@ function Main(){
               gutterBottom
             >
               Wolveroommates
-            </Typography>
+            </Typography> */}
             <Typography variant="h5" align="center" color="text.secondary" paragraph>
               Find your ideal roommate here!
             </Typography>
