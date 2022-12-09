@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useRoutes } from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -17,17 +17,37 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { getAuth } from "firebase/auth";
-import {app} from "./FirebaseApp.js"
+import { app } from "./FirebaseApp.js"
+import { AlertTitle } from '@mui/material';
+import { Alert } from '@mui/material';
 
 const theme = createTheme();
 
 const auth = getAuth(app);
 
-const SignIn = ({setExists}) => {
+
+
+function wrongCredentials() {
+
+
+  return (<div><Alert variant="filled" severity="error">
+    <AlertTitle>Error</AlertTitle>
+    !wrong password and/or username!
+  </Alert></div>);
+
+
+}
+
+
+function correctCredentials() {
+  return (<div><Alert severity="success"></Alert></div>)
+}
+
+const SignIn = ({ setExists }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
-  let navigate = useNavigate();
+  const [displaySignInError, setDisplaySignInError] = useState(true);
+  const [displaySignInSuccess, setDisplaySignInSuccess] = useState(true);
 
   const [
     signInWithEmailAndPassword,
@@ -36,20 +56,65 @@ const SignIn = ({setExists}) => {
     error,
   ] = useSignInWithEmailAndPassword(auth);
 
+  let errorCode = '';
+  if (error !== undefined) {
+    errorCode = error.code;
+  }
+
+  let navigate = useNavigate();
+
+
+  // console.log({
+  //   "user": user,
+  //   "error": error,
+  // });
+
+  // let x = false;
+  // if (error && (error.code === "auth/invalid-email")) {
+  //   x = true;
+  // }
+
+  // console.log({
+  //   "equal error ": x,
+  // });
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log({
       email: email,
       password: password,
     });
-    try {
-      signInWithEmailAndPassword(email, password);
-      navigate("/main");
+
+
+    // TODO : userCredential keeps returning null even iglogged in with the correct credentials
+    // the other version was doiinig the same thing. it was not catching the wrong password/username errors
+    // it's why we kept getting redirected to main in the url trying to sign in with the incorret credentials
+    // not sure how to access userCredential.user.email. it seems like it should be able to be accessed
+    signInWithEmailAndPassword(email, password);
+  }
+
+
+
+
+
+  let signInStatusError = false;
+  let signInStatusSuccess = false;
+  if (user) {
+    signInStatusSuccess = true;
+
+
+    navigate("/main")
+  } else {
+    if ((error !== undefined)) {
+      if (errorCode === 'auth/wrong-password' || errorCode === 'auth/invalid-email') {
+        signInStatusError = true;
+      }
+
     }
-    catch (error) {
-      console.log(error);
-    }
-  };
+  }
+
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -69,8 +134,28 @@ const SignIn = ({setExists}) => {
           <Typography component="h1" variant="h5">
             Sign In
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            
+
+
+
+          {(signInStatusSuccess && displaySignInError) && <div><Alert severity="success"></Alert></div>}
+          {(signInStatusError && displaySignInSuccess) && <div><Alert variant="filled" severity="error">
+            <AlertTitle>Error</AlertTitle>
+            <pre>!wrong password and/or username!</pre>
+            <pre>      !please try again!        </pre>
+
+
+          </Alert></div>}
+
+
+
+
+
+
+
+
+
+          <Box component="form" noValidate sx={{ mt: 1 }}>
+
             <TextField
               required
               fullWidth
@@ -99,15 +184,17 @@ const SignIn = ({setExists}) => {
               Sign In
             </Button>
             <Grid container>
-                <Link href="/sign-up" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
+              <Link href="/sign-up" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
             </Grid>
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
+    </ThemeProvider >
   );
-}
+};
+
+
 
 export default SignIn;
