@@ -7,13 +7,14 @@ import PersonIcon from '@mui/icons-material/Person';
 import Typography from '@mui/material/Typography';
 
 import { getAuth } from "firebase/auth";
-import {app} from "./FirebaseApp.js"
+import { app, db } from "./FirebaseApp.js"
 import React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
+import { doc, getDoc } from 'firebase/firestore';
 
 const auth = getAuth(app);
 
@@ -31,9 +32,31 @@ const SignUp3 = () => {
     error,
   ] = useCreateUserWithEmailAndPassword(auth);
 
+  const validateEmailAndPassword = async (email, password) =>{
+    // if email in db already
+    const docRef = doc(db, "users", email);
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap().exists()){
+      throw new Error('account already exists')
+    }
+    // if email is edu email
+    else if (email.slice(-4) !== ".edu"){
+      throw new Error('email is not an edu email');
+    }
+    // check if password is valid length
+    else if (password.length < 6){
+      throw new Error('password is not long enough');
+    }
+
+    
+  }
+
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     try{
+      validateEmailAndPassword(email,password);
       createUserWithEmailAndPassword(email, password);
       navigate("/create");
     }
@@ -42,13 +65,6 @@ const SignUp3 = () => {
     }
   };
 
-  if (error) {
-    return (
-      <div>
-        <p>Error: {error.message}</p>
-      </div>
-    );
-  }
   if (loading) {
     return <p>Loading...</p>;
   }
