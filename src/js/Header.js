@@ -37,6 +37,7 @@ export default function Header() {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+    navigate("/profile");
   };
 
   const handleCloseUserMenu = () => {
@@ -161,7 +162,7 @@ export default function Header() {
               >
                 <MenuItem key="Profile" onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">
-                    <Link to="/Profile">Profile</Link>
+                    Profile
                   </Typography>
                 </MenuItem>
                 <MenuItem key="Logout" onClick={() => {

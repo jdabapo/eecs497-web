@@ -40,16 +40,6 @@ const SignUp3 = () => {
     if (docSnap().exists()){
       throw new Error('account already exists')
     }
-    // if email is edu email
-    else if (email.slice(-4) !== ".edu"){
-      throw new Error('email is not an edu email');
-    }
-    // check if password is valid length
-    else if (password.length < 6){
-      throw new Error('password is not long enough');
-    }
-
-    
   }
 
   
@@ -94,11 +84,13 @@ const SignUp3 = () => {
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
+            sx={{ mb: 2 }}
             required
             fullWidth
             id="email"
             label="Email Address"
             value={email}
+            helperText="Must use a university (.edu) email"
             onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
@@ -108,10 +100,13 @@ const SignUp3 = () => {
             label="Password"
             type="password"
             value={password}
+            helperText="Password must be at least 6 characters"
             onChange={(e) => setPassword(e.target.value)}
           />
+          {(email.slice(-4) !== ".edu" || password.length < 6) ?
           <Button
             type="submit"
+            disabled
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
@@ -119,6 +114,15 @@ const SignUp3 = () => {
           >
             Next
           </Button>
+          : <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+          onClick={e => handleSubmit(e)}
+        >
+          Next
+        </Button>}
           <Link href="/" variant="body2">
             {"Have an account? Sign In"}
           </Link>
