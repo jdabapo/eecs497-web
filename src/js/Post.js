@@ -17,8 +17,6 @@ import '../assets/storyboards.jpg';
 
 export default function Post({card}){
 
-  console.log("../assets/" + card.picture)
-
   return(
     <Grid item key={card} xs={12} sm={6} md={4}>
     <Card
@@ -36,12 +34,15 @@ export default function Post({card}){
         <Typography gutterBottom variant="h5" component="h2">
           {card.name}
         </Typography>
+        <Typography gutterBottom component="h3">
+          {card.eng_name}
+        </Typography>
         {/* maybe we should have card class that keeps track of the values
           below */}
         <Chip icon={<SchoolIcon fontSize='small' />} label={card.grade_level} sx={{ mt: 0.5, mr: 0.5 }} />
         <Chip icon={<PublicIcon fontSize='small' />} label={card.ethnicity} sx={{ mt: 0.5, mr: 0.5 }} />
         <Chip icon={<RecordVoiceOverIcon fontSize='small' />} label={card.pref_language} sx={{ mt: 0.5, mr: 0.5 }} />
-        <Typography>
+        <Typography sx={{ mt: 2 }}>
           {card.description}
         </Typography>
       </CardContent>

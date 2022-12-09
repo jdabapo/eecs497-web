@@ -26,11 +26,11 @@ export function DeleteModal(email) {
 
   async function handleDelete(email){
     try{
-        await deleteDoc(doc(db, "users", email));
-        navigate("/sign-up");
+      await deleteDoc(doc(db, "users", email));
+      navigate("/sign-up");
     }
     catch (error){
-        console.log(error);
+      console.log(error);
     }
   }
 

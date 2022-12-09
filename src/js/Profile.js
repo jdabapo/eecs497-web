@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { useDocument } from 'react-firebase-hooks/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { DeleteModal } from './Delete';
 
 
@@ -29,34 +28,27 @@ import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import HalfRating from "./Rating.js";
-
 const theme = createTheme();
 
 export default function Profile() {
 
   const [profile,setProfile] = useState({});
   const auth = getAuth(app);
-  const [user, userLoading, userError] = useAuthState(auth);
+  const [user, userLoading] = useAuthState(auth);
   let navigate = useNavigate();
 
   useEffect(()=>{
     const fetchData = async() =>{
       const docRef = doc(db, "users", user.email);
       const docSnap = await getDoc(docRef);
-      if(docSnap.exists()){
-        // console.log(docSnap.data());
-      }
-      else{
-        console.log('warning');
-      }
       setProfile(docSnap.data());
+      console.log("profile fetch")
     }
     if(!userLoading){
       fetchData();
     }
     console.log(user)
-  },[userLoading]);
+  }, [user, userLoading]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -88,13 +80,16 @@ export default function Profile() {
                   alt={"Default profile"}
                 />}
                 <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom variant="h5" component="h2">
+                  <Typography gutterBottom variant="h4" component="h2">
                     {profile.name}
                   </Typography>
-                  <Chip icon={<SchoolIcon fontSize='small' />} label={profile.year} sx={{ mt: 0.5, mr: 0.5 }} />
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {profile.eng_name}
+                  </Typography>
+                  <Chip icon={<SchoolIcon fontSize='small' />} label={profile.grade_level} sx={{ mt: 0.5, mr: 0.5 }} />
                   <Chip icon={<PublicIcon fontSize='small' />} label={profile.ethnicity} sx={{ mt: 0.5, mr: 0.5 }} />
-                  <Chip icon={<RecordVoiceOverIcon fontSize='small' />} label={profile.language} sx={{ mt: 0.5, mr: 0.5 }} />
-                  <Typography>
+                  <Chip icon={<RecordVoiceOverIcon fontSize='small' />} label={profile.pref_language} sx={{ mt: 0.5, mr: 0.5 }} />
+                  <Typography sx={{mt: 2}}>
                     {profile.description}
                   </Typography>
                 </CardContent>
@@ -116,7 +111,7 @@ export default function Profile() {
               >
                 Delete Profile
               </Button> */}
-              <DeleteModal ></DeleteModal>
+              <DeleteModal email={user.email}></DeleteModal>
             </Stack>
           </Container>
         </Box>

@@ -29,13 +29,13 @@ const SignUp3 = () => {
     createUserWithEmailAndPassword,
     user,
     loading,
-    error,
   ] = useCreateUserWithEmailAndPassword(auth);
 
   const validateEmailAndPassword = async (email, password) =>{
     // if email in db already
     const docRef = doc(db, "users", email);
     const docSnap = await getDoc(docRef);
+    console.log("sign up fetch")
     
     if (docSnap().exists()){
       throw new Error('account already exists')

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -7,33 +7,6 @@ import Post from "./Post";
 import { getFirestore, collection } from 'firebase/firestore';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import {app} from "./FirebaseApp.js"
-
-
-const cards = [
-  {
-    name: "Santa Ono",
-    year: "Freshman",
-    ethnicity: "East Asian",
-    language: "Japanese",
-    img: "https://i0.wp.com/www.michigandaily.com/wp-content/uploads/2022/10/gpb.NEW_.PresidentOnoInterview.10.18.22.088.jpg?resize=1200%2C800&ssl=1",
-    about: "Looking for someone cool to room with during my first year at Michigan!"
-  },
-  {
-    name: "Billy Magic",
-    year: "Senior",
-    ethnicity: "White",
-    language: "English",
-    img: "https://i0.wp.com/www.michigandaily.com/wp-content/uploads/2022/09/Image-from-iOS-3.jpeg?resize=2048%2C1365&ssl=1",
-    about: ""
-  },
-  {
-    name: "Natalie Emcard",
-    year: "Junior",
-    ethnicity: "Black",
-    language: "English",
-    img: "https://pbs.twimg.com/profile_images/2997158888/96463b62bb6df4b35196b17af96dc578_400x400.jpeg"
-  },
-];
 
 function Main(){
     const [value, loading, error] = useCollection(collection(getFirestore(app), 'users'));
@@ -49,7 +22,7 @@ function Main(){
         value.docs.map((doc) => (tmp.push(doc.data())));
         setCards(tmp);
       }
-    },[loading]);
+    }, [error, loading, value]);
     
     return (
     <>

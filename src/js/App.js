@@ -21,7 +21,7 @@ const theme = createTheme();
 const auth = getAuth(app);
 
 export default function App() {
-  const [user, loading, error] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   
   // TODO: fix this so it shows different routes
   if (user){

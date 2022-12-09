@@ -13,12 +13,11 @@ import {
   Menu,
 } from "@mui/material";
 import { getAuth } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { app, db } from "./FirebaseApp";
 import { useAuthState } from "react-firebase-hooks/auth";
 import MenuIcon from "@mui/icons-material/Menu";
 import AdbIcon from "@mui/icons-material/Adb";
-import { Link } from "react-router-dom";
 
 const auth = getAuth(app);
 
@@ -45,18 +44,19 @@ export default function Header() {
   };
 
   const [profile, setProfile] = useState({});
-  const [user, userLoading, userError] = useAuthState(auth);
+  const [user, userLoading] = useAuthState(auth);
 
   useEffect(() => {
     const fetchData = async () => {
       const docRef = doc(db, "users", user.email);
       const docSnap = await getDoc(docRef);
       setProfile(docSnap.data());
+      console.log("header fetch")
     };
     if (!userLoading) {
       fetchData();
     }
-  }, [profile, user, userLoading]);
+  }, [user, userLoading]);
 
   return (
     <AppBar position="static">
