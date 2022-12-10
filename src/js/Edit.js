@@ -20,7 +20,6 @@ export default function FormPropsTextFields() {
   const [user, userLoading] = useAuthState(auth);
 
   const [name,setName] = useState();
-  const [engName, setEngName] = useState();
   const [gradeLevel,setGradeLevel] = useState();
   const [race,setRace] = useState();
   const [lang,setLang] = useState();
@@ -44,20 +43,18 @@ export default function FormPropsTextFields() {
       fetchData();
 
       setName(profile.name);
-      setEngName(profile.eng_name);
       setGradeLevel(profile.grade_level);
       setRace(profile.ethnicity);
       setLang(profile.pref_language);
       setDesc(profile.description);
       setPic(profile.picture);
     }
-  }, [profile.description, profile.eng_name, profile.ethnicity, profile.grade_level, profile.name, profile.picture, profile.pref_language, user.email, userLoading]);
+  }, [profile.description, profile.ethnicity, profile.grade_level, profile.name, profile.picture, profile.pref_language, user.email, userLoading]);
 
   async function handleSubmit(event) {
     event.preventDefault();
     const toSubmit = {
       name:name,
-      eng_name: engName,
       grade_level:gradeLevel,
       ethnicity:race,
       pref_language:lang,
@@ -65,7 +62,6 @@ export default function FormPropsTextFields() {
       email:user.email,
       picture:pic
     }
-    console.log(engName);
     await setDoc(doc(db, 'users', user.email), toSubmit);
     navigate("/profile");
   }
@@ -99,18 +95,10 @@ export default function FormPropsTextFields() {
               InputLabelProps={{shrink: true}}
               required
               id="outlined-required"
-              label="Full Name (preferred language)"
+              label="Full Name"
               placeholder={name}
               value={name}
               onChange={(e)=>setName(e.target.value)}
-            />
-            <TextField
-              InputLabelProps={{shrink: true}}
-              id="outlined-required"
-              label="Full Name (English)"
-              placeholder={engName}
-              value={engName}
-              onChange={(e)=>setEngName(e.target.value)}
             />
             <TextField
               InputLabelProps={{shrink: true}}

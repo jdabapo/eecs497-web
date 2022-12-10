@@ -19,7 +19,6 @@ const style = {
 };
 
 const auth = getAuth();
-const user = auth.currentUser;
 
 export function DeleteModal({email}) {
   const [open, setOpen] = React.useState(false);
@@ -29,8 +28,8 @@ export function DeleteModal({email}) {
 
   async function handleDelete(email){
     try{
+      deleteUser(auth.currentUser);
       await deleteDoc(doc(db, "users", email));
-      deleteUser(user);
       navigate("/sign-up");
     }
     catch (error){
