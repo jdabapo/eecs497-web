@@ -53,9 +53,7 @@ export default function Header() {
       setProfile(docSnap.data());
       console.log("header fetch")
     };
-    if (!userLoading) {
-      fetchData();
-    }
+    fetchData();
   }, [user, userLoading]);
 
   return (

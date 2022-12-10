@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
+import Modal from '@mui/material/Modal';import { getAuth, deleteUser } from "firebase/auth";
 import { doc, deleteDoc } from "firebase/firestore";
 import { app, db } from './FirebaseApp';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +18,10 @@ const style = {
   p: 4,
 };
 
-export function DeleteModal(email) {
+const auth = getAuth();
+const user = auth.currentUser;
+
+export function DeleteModal({email}) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -27,6 +30,7 @@ export function DeleteModal(email) {
   async function handleDelete(email){
     try{
       await deleteDoc(doc(db, "users", email));
+      deleteUser(user);
       navigate("/sign-up");
     }
     catch (error){
@@ -64,7 +68,7 @@ export function DeleteModal(email) {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
             color="error"
-            onClick={handleDelete}
+            onClick={() => handleDelete(email)}
             >
                 Delete account
             </Button>

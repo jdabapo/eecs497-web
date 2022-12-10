@@ -24,34 +24,15 @@ const theme = createTheme();
 
 const auth = getAuth(app);
 
-
-
-function wrongCredentials() {
-
-
-  return (<div><Alert variant="filled" severity="error">
-    <AlertTitle>Error</AlertTitle>
-    !wrong password and/or username!
-  </Alert></div>);
-
-
-}
-
-
-function correctCredentials() {
-  return (<div><Alert severity="success"></Alert></div>)
-}
-
-const SignIn = ({ setExists }) => {
+const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [displaySignInError, setDisplaySignInError] = useState(true);
-  const [displaySignInSuccess, setDisplaySignInSuccess] = useState(true);
+  const [signInStatusError, setSignInStatusError] = useState(false);
 
   const [
     signInWithEmailAndPassword,
     user,
-    loading,
+    userLoading,
     error,
   ] = useSignInWithEmailAndPassword(auth);
 
@@ -61,7 +42,6 @@ const SignIn = ({ setExists }) => {
   }
 
   let navigate = useNavigate();
-
 
   // console.log({
   //   "user": user,
@@ -77,14 +57,12 @@ const SignIn = ({ setExists }) => {
   //   "equal error ": x,
   // });
 
-
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log({
       email: email,
       password: password,
     });
-
 
     // TODO : userCredential keeps returning null even iglogged in with the correct credentials
     // the other version was doiinig the same thing. it was not catching the wrong password/username errors
@@ -93,27 +71,13 @@ const SignIn = ({ setExists }) => {
     signInWithEmailAndPassword(email, password);
   }
 
-
-
-
-
-  let signInStatusError = false;
-  let signInStatusSuccess = false;
-  if (user) {
-    signInStatusSuccess = true;
-
-
-    navigate("/main")
-  } else {
-    if ((error !== undefined)) {
-      if (errorCode === 'auth/wrong-password' || errorCode === 'auth/invalid-email') {
-        signInStatusError = true;
-      }
-
+  useEffect(() => {
+    if (user) {
+      navigate("/main");
+    } else if (error) {
+      setSignInStatusError(true);
     }
-  }
-
-
+  }, [error, navigate, user]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -134,24 +98,11 @@ const SignIn = ({ setExists }) => {
             Sign In
           </Typography>
 
-
-
-          {(signInStatusSuccess && displaySignInError) && <div><Alert severity="success"></Alert></div>}
-          {(signInStatusError && displaySignInSuccess) && <div><Alert variant="filled" severity="error">
+          {signInStatusError && <div><Alert variant="filled" severity="error">
             <AlertTitle>Error</AlertTitle>
             <pre>!wrong password and/or username!</pre>
             <pre>      !please try again!        </pre>
-
-
           </Alert></div>}
-
-
-
-
-
-
-
-
 
           <Box component="form" noValidate sx={{ mt: 1 }}>
 
